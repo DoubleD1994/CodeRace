@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    
+    <head>
+        <meta charset="utf-8" />
+
+        <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline' *; img-src * data: 'unsafe-inline'">
+            <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+            <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+            
+            <title>CodeRace</title>
+            <link rel="stylesheet" type="text/css" href="css/mapInterface.css" />
+            <link rel="stylesheet" type="text/css" href="css/index.css" />
+            <script src="https://developers.google.com/maps/documentation/javascript/examples/markercluster/markercluster.js"></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAirR6LINaMUr8Sj17doOCvs3euBvz7-cs&callback=initMap"
+                type="text/javascript"></script>
+            <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function()
+                {
+                                                      
+                    $("#logOutTask").click(function(){
+                                localStorage.login="false";
+                                window.location.href = "index.html";
+                            });
+                });
+            </script>
+    </head>
+    
+    <body>
+
+        <div id="footer">
+            
+            <a href="helpPage.html"><button id="helpTask">Help</button></a>
+            <a href="scorePage.html"><button id="scoreTask">Score</button></a>
+            <a href="chatPage.html"><button id="chatTask">Chat</button></a>
+            <button id="showTask">Show</button>
+            <input type="button" id="logOutTask" value="Log Out"/>
+        </div>
+        <div id="map-canvas"></div>
+        
+        
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/mapInterface.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        
+    </body>
+    
+</html>

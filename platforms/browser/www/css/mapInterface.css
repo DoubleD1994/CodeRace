@@ -1,0 +1,75 @@
+html{ height: 100% }
+body{ height: 100%; margin: 0; padding: 0}
+#map-canvas {height: 90% }
+
+#loginTask
+{
+	display:block;
+	width:20%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border:0;
+	height:2em;
+	font-size:1em;
+} 
+
+#helpTask
+{
+	width:19%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border:0;
+	height:2em;
+	font-size:1em;
+	background-color: red;
+}
+
+#scoreTask
+{
+	width:19%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border:0;
+	height:2em;
+	font-size:1em;
+	background-color: green;
+}
+
+#chatTask
+{
+	width:19%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border:0;
+	height:2em;
+	font-size:1em;
+	background-color: blue;
+}
+
+#showTask
+{
+	width:19%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border:0;
+	height:2em;
+	font-size:1em;
+	background-color: yellow;
+}
+
+#logOutTask
+{
+	width:19%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border:2;
+	height:2em;
+	font-size:1em;
+	background-color: white;
+}

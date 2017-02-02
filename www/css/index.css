@@ -1,0 +1,91 @@
+body
+{
+	font-family: Verdana, Arial;
+	font-size: 18px;
+}
+
+h1
+{
+	font-size: 56px;
+	font-family: "Comic Sans Ms";
+	color: red;
+	line-height:2em;
+	text-align:center;
+}
+
+#usernameInput
+{
+	display:block;
+	width:98%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border-color: black;
+	height:2em;
+	font-size:1em;
+}
+
+#passwordInput
+{
+	display:block;
+	width:98%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border-color: black;
+	height:2em;
+	font-size:1em;
+}
+
+
+#loginTask
+{
+	display:block;
+	width:20%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border:0;
+	height:2em;
+	font-size:1em;
+} 
+
+#logOutTask
+{
+	width:19%;
+	margin-top:5px;
+	margin-left:auto;
+	margin-right:auto;
+	border:2;
+	height:2em;
+	font-size:1em;
+	background-color: white;
+}
+
+#taskList
+{
+	margin-top:10px;
+}
+
+#taskList > li
+{
+	background: -webkit-linear-gradient(#FFF, #F6F6F7);
+	background: -o-linear-gradient(#FFF, #F6F6F7);
+	background: -moz-linear-gradient(#FFF, #F6F6F7);
+	background: linear-gradient(#FFF, #F6F6F7);
+	border: 1px solid #BBB6AF;
+	line-height:2em;
+	color:#929292;
+	margin-top:2px;
+}
+
+#taskList span
+{
+	margin-left:5px;
+}
+
+.done
+{
+	text-decoration:line-through;
+	opacity:0.5;
+}

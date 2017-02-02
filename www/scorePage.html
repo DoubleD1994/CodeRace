@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+    
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="css/ionic.css">
+        <title>CodeRace</title>
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function()
+                              {
+                              var url="http://ddryburgh.comli.com/getTeamInfo.php";
+                              $.getJSON(url, function(result){
+                                        console.log(result);
+                                        $.each(result, function(i, field){
+                                               var team=field.team_name;
+                                               var score=field.score;
+                                               $("#listview").append("<p class='item' 'Team Name="+team+"&Score="+score+"'>"+ team + " </h2>"+ score +"</p>");
+                                               
+                                               
+                                               });
+                                        });
+                              });
+            </script>
+    </head>
+    
+    <body>
+        <div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+            <a href="mapInterface.html" class="button button-clear">Back</a>
+            <h1 class="title">Score</h1>
+        </div><br/><br/>
+        <ul class="list" id="listview">
+        </ul>
+
+        <script type="text/javascript" src="js/index.js"></script>
+        
+    </body>
+    
+</html>
