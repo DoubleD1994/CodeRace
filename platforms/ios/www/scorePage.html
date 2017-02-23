@@ -12,12 +12,14 @@
         <script type="text/javascript">
             $(document).ready(function()
                               {
-                              var url="http://ddryburgh.comli.com/getTeamInfo.php";
-                              $.getJSON(url, function(result){
-                                        console.log(result);
-                                        $.each(result, function(i, field){
-                                               var team=field.team_name;
-                                               var score=field.score;
+                              
+                              $.ajax({
+                                     url: "https://api.mlab.com/api/1/databases/coderace/collections/team?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O"
+                                     }).done(function(data)
+                                        {
+                                        $.each(data, function(i, data){
+                                               var team=data.team_name;
+                                               var score=data.score;
                                                $("#listview").append("<p class='item' 'Team Name="+team+"&Score="+score+"'>"+ team + " </h2>"+ score +"</p>");
                                                
                                                

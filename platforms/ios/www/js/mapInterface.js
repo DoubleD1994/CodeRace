@@ -22,16 +22,19 @@ $( document ).ready(function(){
                     
                     var url="http://ddryburgh.comli.com/getLocationInfo.php";
                     
-                    $.getJSON(url, function(result){
-                              console.log(result);
-                              $.each(result, function(i, field){
+                    $.ajax({
+                        url: "https://api.mlab.com/api/1/databases/coderace/collections/locations?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O"
+                    }).done(function(data){
+                              $.each(data, function(i, data){
                                      
-                                     var locationLat=field.latitude;
-                                     var locationLong=field.longitude;
-                                     var clue = field.clue;
-                                     var correctAnswer = field.answer;
+                                     var locationLat=data.latitude;
+                                     var locationLong=data.longitude;
+                                     var clue = data.clue;
+                                     var correctAnswer = data.answer;
+                                     
                                      var location = new google.maps.LatLng(locationLat, locationLong);
                                      var newMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'logo.PNG'});
+                                     
                                      newMarker.addListener('click', function(){
                                                            var answer = prompt(clue, "")
                                                            

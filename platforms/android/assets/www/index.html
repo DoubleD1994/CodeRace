@@ -13,32 +13,38 @@
                               {
                               
                               $("#loginTask").click(function(){
+                                                    
                                                 var username=$("#usernameInput").val();
                                                 var password=$("#passwordInput").val();
-                                                var dataString="username="+username+"&password="+password+"&login=";
+                                                    
                                                 if($.trim(username).length>0 & $.trim(password).length>0)
                                                 {
                                                 $.ajax({
-                                                       type: "POST",
-                                                       url: "http://ddryburgh.comli.com/login.php",
-                                                       data: dataString,
-                                                       crossDomain: true,
-                                                       cache: false,
-                                                       beforeSend: function(){ $("#loginTask").html('Logging In...');},
-                                                       success: function(data)
-                                                       {
-                                                       if(data=="success")
-                                                       {
-                                                       localStorage.login="true";
-                                                       localStorage.username=username;
-                                                       window.location.href = "mapInterface.html";
-                                                       }
-                                                       else if(data="failed")
-                                                       {
-                                                       alert("Login Error");
-                                                       }
-                                                       }
-                                                       });
+                                                       url: "https://api.mlab.com/api/1/databases/coderace/collections/players?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O",
+                                                       }).done(function(data){
+                                                                    $.each(data, function(i, data){
+                                                                        
+                                                                           var aUsername=data.username;
+                                                                           var aPassword=data.password;
+                                                                           
+                                                                           if(username==aUsername && password==aPassword)
+                                                                           {
+                                                                                localStorage.login="true";
+                                                                                localStorage.username=username;
+                                                                                window.location.href =  "mapInterface.html";
+                                                                           }
+                                                                           else
+                                                                           {
+                                                                                output = '<div>';
+                                                                                output += '<p>Login Error</p>';
+                                                                                output += '</div>';
+                                                                                $('#failed').html(output);
+                                                                           }
+                                                                    });
+                                                        
+                                                               });
+                                                
+                                                    
                                                 }return false;
                                                 });
                               });
@@ -55,6 +61,11 @@
             <input type="username" id="usernameInput" placeholder="Username"></input>
             <input type="password" id="passwordInput" placeholder="Password"></input>
             <input type ="button" id="loginTask" value="Log In"/>
+            
+        </div>
+        
+        <div>
+            <div id="failed"></div>
         </div>
         
         <script type="text/javascript" src="js/index.js"></script>
