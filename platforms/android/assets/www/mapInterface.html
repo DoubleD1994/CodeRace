@@ -21,8 +21,15 @@
                 {
                     $("#logOutTask").click(function(){
                                 localStorage.login="false";
+                                localStorage.username="null";
+                                localStorage.password="null";
+                                localStorage.team="null";
                                 window.location.href = "index.html";
                             });
+                                  
+                                  //Get information from the local storage
+                                  //var output = localStorage.team;
+                                  //$('#footer').html(output);
                 });
             </script>
     </head>
@@ -37,6 +44,7 @@
             <button id="showTask">Show</button>
             <input type="button" id="logOutTask" value="Log Out"/>
         </div>
+        
         <div id="map-canvas"></div>
         
         
