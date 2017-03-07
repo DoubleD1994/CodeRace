@@ -1,25 +1,52 @@
 $( document ).ready(function(){
                     
+                    
                     //Google Maps - first three variables can be used to initialise game
                     //it gets players location and marks it on the map
                     //then centers the map to there location.
+                    //var map;
+                    var marker;
+                    //var myLatlng;
+                    
+                    
+                    
+                    //initialise the map
+                    //function initMap(){
+                    
+                        var mapOptions = {zoom: 15,center: {lat: 55.932875, lng: -3.214545}}
+                        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                     //   alert("hi");
+                   // }
+                    
                     
                     navigator.geolocation.watchPosition(onSuccess, onError, {enableHighAccuracy: true, timeout: 30000, maximumAge: 3000});
                     
-                    
+                    //get the players location
                     function onSuccess(position){
-
-                    var lat=position.coords.latitude;
-                    var lang=position.coords.longitude;
-                    var iconBase = "img/";
-                    //Google Maps - first three variables can be used to initialise game
-                    //it gets players location and marks it on the map
-                    //then centers the map to there location.
-                    var myLatlng = new google.maps.LatLng(lat, lang);
-                    var mapOptions = {zoom: 15,center: myLatlng}
-                    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                     
-                    var marker = new google.maps.Marker({position: myLatlng,map: map, icon: iconBase + 'playerLocation.PNG'});
+                        var lat=position.coords.latitude;
+                        var lang=position.coords.longitude;
+                                        //Google Maps - first three variables can be used to initialise game
+                        //it gets players location and marks it on the map
+                        //then centers the map to there location.
+                        //myLatlng = new google.maps.LatLng(lat, lang);
+                        //var mapOptions = {zoom: 15,center: myLatlng}
+                        //var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                    
+                        displayMarker(lat, lang);
+                        theLocations();
+                        //initMap();
+                    }
+                    
+                    //initMap();
+                    
+                    //display player location on map and send locaiton to db
+                    function displayMarker(lat, lang){
+                    
+                    var myLatlng = new google.maps.LatLng(lat, lang);
+                    
+                    var iconBase = "img/";
+                    marker = new google.maps.Marker({position: myLatlng,map: map, icon: iconBase + 'playerLocation.PNG'});
                     //var icons = {locations: {icon: iconBase + 'logo.PNG'}}
                     
                     //The players marker should always be at the front
@@ -44,9 +71,13 @@ $( document ).ready(function(){
                            }
                            
                     });
+                    }
+                    
+                    
                     
                     //To show other players locations
                     $("#showTask").click(function(){
+                                  var iconBase = "img/";
                                          
                                          //get players locations from database
                                          $.ajax({
@@ -68,7 +99,13 @@ $( document ).ready(function(){
                                                         });
                                                         
                                          });
-                   });
+                    });
+                    
+                    
+                    //get the locations of the markers
+                    function theLocations(){
+                    
+                    var iconBase = "img/";
                     
                     //This ajax to loop through the locations documents to get markers
                     $.ajax({
@@ -86,22 +123,30 @@ $( document ).ready(function(){
                                      //set the location on google maps api
                                      var location = new google.maps.LatLng(locationLat, locationLong);
                                      
+                                     //add new marker for unclaimed location
+                                     var locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'logo.PNG'});;
+                                     
                                      //check is location is already claimed
                                      if(isClaimed=="false")
                                      {
-                                     //add new marker for unclaimed location
-                                     var newMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'logo.PNG'});
+                                     
+                                     
                                      
                                      //add listener for when a marker is clicked
-                                     newMarker.addListener('click', function(){
+                                     locationMarker.addListener('click', function(){
                                                            //display answer box
                                                            var answer = prompt(clue, "")
                                                                 //check if answer is correct
                                                                 if(answer==correctAnswer)
                                                                 {
+                                                                    //Little pop up message to alert player if correct answer
+                                                                    var x = document.getElementById("correct")
+                                                                    x.className = "show";
+                                                                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                                                           
                                                                     //change marker from claimable to claimed
-                                                                    newMarker.setVisible(false);
-                                                                    var claimedMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'claimed.PNG'});
+                                                                    locationMarker.setIcon(iconBase + 'claimed.PNG');
+                                                                    //locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'claimed.PNG'});
                                                            
                                                                     //loop through teams in db
                                                                     $.ajax({
@@ -163,7 +208,10 @@ $( document ).ready(function(){
                                                                 }
                                                                 else
                                                                 {
-                                                                    alert("Wrong Answer Input");
+                                                                    //Little pop up message to alert player if correct answer
+                                                                    var x = document.getElementById("wrong")
+                                                                    x.className = "show";
+                                                                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                                                                 }
                                                            
                                                            
@@ -171,8 +219,11 @@ $( document ).ready(function(){
                                      }
                                      else
                                      {
+                                        //add new marker for unclaimed location
+                                        //newMarker.setVisible(false);
                                         //place marker to say location claimed
-                                        var claimedMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'claimed.PNG'});
+                                        //locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'claimed.PNG'});
+                                        locationMarker.setIcon(iconBase + 'claimed.PNG');
                                      }
                                      });
                               });
@@ -184,7 +235,7 @@ $( document ).ready(function(){
                     alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
                     }
                     
-             google.maps.event.addDomListener(window, 'load', onSuccess);
+              //google.maps.event.addDomListener(window, 'load', initMap);
 });
 
 
