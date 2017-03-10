@@ -4,19 +4,33 @@ $( document ).ready(function(){
                     //Google Maps - first three variables can be used to initialise game
                     //it gets players location and marks it on the map
                     //then centers the map to there location.
-                    //var map;
+                    var map;
                     var marker;
+                    var i = 0;
                     //var myLatlng;
                     
+                    function loadAsynchonousScript(){
+                    var script = document.createElement('script');
+                    script.type='text/javascript';
+                    script.src='http://maps.googleapis.com/maps/api/js?key=AIzaSyAirR6LINaMUr8Sj17doOCvs3euBvz7-cs&sensor=false&libraries=places&callback=initialize';
+                    document.body.appendChild(script);
                     
+                    }
                     
                     //initialise the map
-                    //function initMap(){
+                   function initMap(latitude, longitude){
                     
-                        var mapOptions = {zoom: 15,center: {lat: 55.932875, lng: -3.214545}}
-                        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                    //Little pop up message to alert player if correct answer
+                    var x = document.getElementById("theTime")
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4000000);
+                    
+                    //center map to players current location
+                    var mapOptions = {zoom: 15,center: {lat: latitude, lng: longitude}}
+                    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                    //loadAsynchonousScript();
                      //   alert("hi");
-                   // }
+                   }
                     
                     
                     navigator.geolocation.watchPosition(onSuccess, onError, {enableHighAccuracy: true, timeout: 30000, maximumAge: 3000});
@@ -26,28 +40,26 @@ $( document ).ready(function(){
                     
                         var lat=position.coords.latitude;
                         var lang=position.coords.longitude;
-                                        //Google Maps - first three variables can be used to initialise game
-                        //it gets players location and marks it on the map
-                        //then centers the map to there location.
-                        //myLatlng = new google.maps.LatLng(lat, lang);
-                        //var mapOptions = {zoom: 15,center: myLatlng}
-                        //var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                     
-                        displayMarker(lat, lang);
-                        theLocations();
-                        //initMap();
+                        //so the map only loads once
+                        if(i<5)
+                        {
+                            initMap(lat, lang);
+                            i=10;
+                            theLocations();
+                            displayMarker(lat, lang);
+                        }
                     }
                     
-                    //initMap();
                     
                     //display player location on map and send locaiton to db
                     function displayMarker(lat, lang){
+                    
                     
                     var myLatlng = new google.maps.LatLng(lat, lang);
                     
                     var iconBase = "img/";
                     marker = new google.maps.Marker({position: myLatlng,map: map, icon: iconBase + 'playerLocation.PNG'});
-                    //var icons = {locations: {icon: iconBase + 'logo.PNG'}}
                     
                     //The players marker should always be at the front
                     marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
@@ -73,12 +85,12 @@ $( document ).ready(function(){
                     });
                     }
                     
-                    
+                    var playerMarkers = [];
+                    var noOfMarkers = 0;
                     
                     //To show other players locations
                     $("#showTask").click(function(){
                                   var iconBase = "img/";
-                                         
                                          //get players locations from database
                                          $.ajax({
                                             url: "https://api.mlab.com/api/1/databases/coderace/collections/players?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O"
@@ -93,14 +105,12 @@ $( document ).ready(function(){
                                                                var playerLocation = new google.maps.LatLng(playerLat, playerLong);
                                                                
                                                                var playerMarker = new google.maps.Marker({position: playerLocation, map: map, icon: iconBase + 'otherPlayers.PNG'});
-                                                               
-                                                               
-                                                               
+
                                                         });
                                                         
                                          });
+                                         
                     });
-                    
                     
                     //get the locations of the markers
                     function theLocations(){
@@ -124,14 +134,11 @@ $( document ).ready(function(){
                                      var location = new google.maps.LatLng(locationLat, locationLong);
                                      
                                      //add new marker for unclaimed location
-                                     var locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'logo.PNG'});;
+                                     var locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'logo.PNG'});
                                      
                                      //check is location is already claimed
                                      if(isClaimed=="false")
                                      {
-                                     
-                                     
-                                     
                                      //add listener for when a marker is clicked
                                      locationMarker.addListener('click', function(){
                                                            //display answer box
@@ -208,7 +215,7 @@ $( document ).ready(function(){
                                                                 }
                                                                 else
                                                                 {
-                                                                    //Little pop up message to alert player if correct answer
+                                                                    //Little pop up message to alert player if wrong answer
                                                                     var x = document.getElementById("wrong")
                                                                     x.className = "show";
                                                                     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);

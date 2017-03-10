@@ -4,12 +4,30 @@
     
     <head>
         <meta charset="utf-8" />
+        <meta http-equiv="refresh" content="10"/>
         <link rel="stylesheet" type="text/css" href="css/reset.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/ionic.css">
-        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        
 
         <title>CodeRace</title>
+        
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function()
+                              {
+                              //Get information from the local storage
+                              var output = "You're signed into the " + localStorage.team + " team chat";
+                              $('#theTeam').html(output);
+                              //document.getElementById("theTeam").innerHTML = output;
+                              
+                              //refresh the page every 10 seconds to check for new messages
+                              setTimeout(function(){window.location.reload(1);}, 10000);
+                              
+                              
+                              
+                              });
+            </script>
         
     </head>
     
@@ -17,18 +35,21 @@
         <div>
             <div class="bar bar-header bar-positive" style="margin-bottom:80px;">
                 <a href="mapInterface.html" class="button button-clear">Back</a>
-                <h1 class="title">Chat Room</h1>
+                <h1 class="title">Chat Room </h1>
             </div><br/><br/>
-            <div style="height: 60vh;">
-                <p>messages will appear here.....</p>
+            <div style="height: 100%;">
+                <h5 id="theTeam"></h5>
+                <div id="theMessages"></div>
             </div>
-            <input type="text" id="usernameInput" placeholder="Enter message"></input>
-            <button id="logOutTask">Send</button>
+            <form id="send-message">
+                <input type="text" id="message" placeholder="Enter message">
+                <input type="submit" name="submit" value="Send Message">
+            </form>
             
         </div>
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        
+        <script type="text/javascript" src="js/chat.js"></script>
     </body>
     
 </html>

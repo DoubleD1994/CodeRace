@@ -4,7 +4,7 @@
     
     <head>
         <meta charset="utf-8" />
-
+        <!--<meta http-equiv="refresh" content="10"/>-->
         <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline' *; img-src * data: 'unsafe-inline'">
             <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
             <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
@@ -13,8 +13,7 @@
             <link rel="stylesheet" type="text/css" href="css/mapInterface.css" />
             <link rel="stylesheet" type="text/css" href="css/index.css" />
             <script src="https://developers.google.com/maps/documentation/javascript/examples/markercluster/markercluster.js"></script>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAirR6LINaMUr8Sj17doOCvs3euBvz7-cs&callback=initMap"
-                ></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAirR6LINaMUr8Sj17doOCvs3euBvz7-cs&callback=initMap"></script>
             <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
             <script type="text/javascript">
                 $(document).ready(function()
@@ -30,6 +29,36 @@
                                   //Get information from the local storage
                                   //var output = localStorage.team;
                                   //$('#footer').html(output);
+                    //setTimeout(function(){window.location.reload(1);}, 10000);
+                                  
+                                  var countDownDate = new Date("Mar 22, 2017 15:30:00").getTime();
+                                  
+                                  // Update the count down every one second
+                                  var x = setInterval(function()
+                                  {
+                                    // Get todays date and time
+                                    var now = new Date().getTime();
+                                  
+                                    //Find the distance between now and the count down date
+                                    var distance = countDownDate - now;
+                                  
+                                    //time calculations for days, hours, minutes and seconds
+                                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                  
+                                    //output the result in an element with id="theTime"
+                                    document.getElementById("theTime").innerHTML = "Game starts in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                                  
+                                    // If the count down is over, write some text
+                                    if (distance < 0)
+                                    {
+                                        clearInterval(x);
+                                        document.getElementById("theTime").innerHTML = "EXPIRED";
+                                        window.location.href = "endGame.html";
+                                    }
+                                   }, 1000);
                 });
             </script>
     </head>
@@ -42,13 +71,16 @@
             <a href="scorePage.html"><button id="scoreTask">Score</button></a>
             <a href="chatPage.html"><button id="chatTask">Chat</button></a>
             <button id="showTask">Show</button>
-            <input type="button" id="logOutTask" value="Log Out"/>
+            <input type="button" id="logOutTask" value="LogOut"/>
         </div>
         
         <div id="map-canvas"></div>
         
         <div id="correct">Marker Claimed</div>
         <div id="wrong">Wrong Answer Input</div>
+        <div id="theTime"></div>
+
+        
         
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script src="js/mapInterface.js"></script>
