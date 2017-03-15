@@ -16,7 +16,7 @@ body{ height: 100%; margin: 0; padding: 0}
 
 #helpTask
 {
-	width:19%;
+	width:17%;
 	margin-top:5px;
 	margin-left:auto;
 	margin-right:auto;
@@ -28,7 +28,7 @@ body{ height: 100%; margin: 0; padding: 0}
 
 #scoreTask
 {
-	width:19%;
+	width:17%;
 	margin-top:5px;
 	margin-left:auto;
 	margin-right:auto;
@@ -40,7 +40,7 @@ body{ height: 100%; margin: 0; padding: 0}
 
 #chatTask
 {
-	width:19%;
+	width:17%;
 	margin-top:5px;
 	margin-left:auto;
 	margin-right:auto;
@@ -52,7 +52,7 @@ body{ height: 100%; margin: 0; padding: 0}
 
 #showTask
 {
-	width:19%;
+	width:17%;
 	margin-top:5px;
 	margin-left:auto;
 	margin-right:auto;
@@ -60,24 +60,11 @@ body{ height: 100%; margin: 0; padding: 0}
 	height:2em;
 	font-size:1em;
 	background-color: yellow;
-}
-
-#hideTask
-{
-	width:19%;
-	margin-top:5px;
-	margin-left:auto;
-	margin-right:auto;
-	border:0;
-	height:2em;
-	font-size:1em;
-	background-color: yellow;
-	visibility: hidden;
 }
 
 #logOutTask
 {
-	width:19%;
+	width:17%;
 	margin-top:5px;
 	margin-left:auto;
 	margin-right:auto;

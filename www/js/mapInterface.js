@@ -44,6 +44,7 @@ $( document ).ready(function(){
                         while(allMarkers.length) { allMarkers.pop().setMap(null);}
                         allMarkers.length=0;
                     
+                        mapBlock();
                         theLocations();
                         displayMarker(lat, lang);
                     
@@ -176,6 +177,7 @@ $( document ).ready(function(){
                                      var correctAnswer = data.answer;
                                      var isClaimed = data.claimed;
                                      var isVisible = data.visible;
+                                     var difficulty = data.difficulty;
                                      
                                      //need isVisible function
                                      
@@ -188,16 +190,133 @@ $( document ).ready(function(){
                                      //check is location is already claimed
                                      if(isClaimed=="false" && isVisible=="true")
                                      {
-                                     //add listener for when a marker is clicked
-                                     locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'logo.PNG'});
-                                     //add location markers to the array
-                                     allMarkers.push(locationMarker);
-                                     locationMarker.addListener('click', function(){
+                                        //check difficulty ratings so that appropriate marker displayed
+                                        if(difficulty=="easy")
+                                        {
+                                            //add listener for when a marker is clicked
+                                            locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'logo.PNG'});
+                                        }
+                                        else if(difficulty=="medium")
+                                        {
+                                            locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'medium.PNG'});
+                                        }
+                                        else if(difficulty=="hard")
+                                        {
+                                            locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'hard.PNG'});
+                                        }
+                                        else if(difficulty=="point swing")
+                                        {
+                                            locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'pointSwing.PNG'});
+                                        }
+                                        else if(difficulty=="hide map")
+                                        {
+                                            locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'hideMaps.PNG'});
+                                        }
+                                     
+                                     
+                                        //add location markers to the array
+                                        allMarkers.push(locationMarker);
+                                     
+                                        locationMarker.addListener('click', function(){
                                                            //display answer box
                                                            var answer = prompt(clue, "")
                                                                 //check if answer is correct
                                                                 if(answer==correctAnswer)
                                                                 {
+                                                                   
+                                                                   var markerScore = 0;
+                                                                   //depending on marker difficulty, add the correct points score to the teams score
+                                                                   if(difficulty=="easy")
+                                                                   {
+                                                                        markerScore = 1;
+                                                                   }
+                                                                   else if(difficulty=="medium")
+                                                                   {
+                                                                        markerScore = 2;
+                                                                   }
+                                                                   else if(difficulty=="hard")
+                                                                   {
+                                                                        markerScore = 3;
+                                                                   }
+                                                                   else if(difficulty=="point swing")
+                                                                   {
+                                                                        //if the marker is the point swing marker, then add 3 to players team
+                                                                        markerScore = 3;
+                                                                   
+                                                                        //loop through teams in db so that other teams score lose 2 points
+                                                                        $.ajax({
+                                                                               url: "https://api.mlab.com/api/1/databases/coderace/collections/team?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O"
+                                                                          }).done(function(data){
+                                                                                  $.each(data, function(i, data){
+                                                                                         //get teams current score
+                                                                                         var score = data.score;
+                                                                                         
+                                                                                         //find the players team
+                                                                                         if(!(data.team_name==localStorage.team))
+                                                                                         {
+                                                                                         var url = 'https://api.mlab.com/api/1/databases/coderace/collections/team/'+data.team_name+'?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O';
+                                                                                         score=score-2;
+                                                                                         
+                                                                                         //update teams score
+                                                                                         $.ajax({
+                                                                                                url: url,
+                                                                                                data: JSON.stringify({
+                                                                                                                     "team_name":data.team_name,
+                                                                                                                     "score":score
+                                                                                                                     }),
+                                                                                                type: 'PUT',
+                                                                                                contentType: "application/json",
+                                                                                                success: function(data){},
+                                                                                                error: function(xhr, status, err)
+                                                                                                {
+                                                                                                alert(err);
+                                                                                                }
+                                                                                                });
+                                                                                         }
+                                                                                         });
+                                                                                  });
+                                                                   
+                                                                   }
+                                                                   //if a player claims this marker, players on other team will have there map hidden for 1 minute
+                                                                   else if(difficulty=="hide map")
+                                                                   {
+                                                                        markerScore = 1;
+                                                                   
+                                                                        $.ajax({
+                                                                          url: "https://api.mlab.com/api/1/databases/coderace/collections/players?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O",
+                                                                          }).done(function(data){
+                                                                                  $.each(data, function(i, data){
+                                                                                         
+                                                                                         var player=data.username;
+                                                                                         var team=data.team_id;
+                                                                                         var takeEffect="false";
+                                                                                         
+                                                                                         if(!(team==localStorage.team))
+                                                                                         {
+                                                                                            $.ajax({
+                                                                                                url: "https://api.mlab.com/api/1/databases/coderace/collections/hideplayermaps?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O",
+                                                                                                data: JSON.stringify({
+                                                                                                                     "_id":player,
+                                                                                                                     "player": player,
+                                                                                                                     "team": team,
+                                                                                                                     "takeEffect": takeEffect
+                                                                                                                     }),
+                                                                                                type: 'POST',
+                                                                                                contentType: "application/json",
+                                                                                                success: function(data){},
+                                                                                                error: function(xhr, status, err)
+                                                                                                {
+                                                                                                alert(err);
+                                                                                                }
+                                                                                            });
+                                                                                         }
+                                                                                         });
+                                                                                  
+                                                                                  });
+                                                                   
+                                                                   
+                                                                   }
+                                                                   
                                                                     //Little pop up message to alert player if correct answer
                                                                     var x = document.getElementById("correct")
                                                                     x.className = "show";
@@ -220,7 +339,7 @@ $( document ).ready(function(){
                                                                                                 if(data.team_name==localStorage.team)
                                                                                                 {
                                                                                                     var url = 'https://api.mlab.com/api/1/databases/coderace/collections/team/'+data.team_name+'?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O';
-                                                                                                    score++;
+                                                                                                    score=score+markerScore;
                                                                                           
                                                                                                     //update teams score
                                                                                                     $.ajax({
@@ -245,7 +364,8 @@ $( document ).ready(function(){
                                                                                                                                             "clue": clue,
                                                                                                                                             "answer": correctAnswer,
                                                                                                                                             "claimed": beenClaimed,
-                                                                                                                                            "visible": "true"
+                                                                                                                                            "visible": "true",
+                                                                                                                                            "difficulty": difficulty
                                                                                                                        }),
                                                                                                                        type: 'PUT',
                                                                                                                        contentType: "application/json",
@@ -293,7 +413,8 @@ $( document ).ready(function(){
                                                                                                                   "clue": data.clue,
                                                                                                                   "answer": data.answer,
                                                                                                                   "claimed": data.claimed,
-                                                                                                                  "visible": "true"
+                                                                                                                  "visible": "true",
+                                                                                                                  "difficulty": data.difficulty
                                                                                                                   }),
                                                                                              type: 'PUT',
                                                                                              contentType: "application/json",
@@ -337,11 +458,44 @@ $( document ).ready(function(){
 
                     }
                     
+                    function mapBlock(){
+                        $.ajax({
+                           url: "https://api.mlab.com/api/1/databases/coderace/collections/hideplayermaps?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O"
+                           }).done(function(data){
+                                   $.each(data, function(key,data){
+                                        if(data.player==localStorage.username&&data.takeEffect=="false")
+                                        {
+                                          var updateUrl = 'https://api.mlab.com/api/1/databases/coderace/collections/hideplayermaps/'+data.player+'?apiKey=gSDJbLmGR6TY76g_31pBOWAWu-201Y7O';
+                                          var takeEffect = "true";
+                                          
+                                          $.ajax({
+                                                 url: updateUrl,
+                                                 data: JSON.stringify({
+                                                                      "player": data.player,
+                                                                      "team": data.team,
+                                                                      "takeEffect": takeEffect
+                                                                      }),
+                                                 type: 'PUT',
+                                                 contentType: "application/json",
+                                                 success: function(data){},
+                                                 error: function(xhr, status, err)
+                                                 {
+                                                 
+                                                 }
+                                            });
+                                          
+                                          window.location.href = "mapBlockPage.html";
+                                        }
+                                   });
+
+                                   
+                        });
+                    }
+                    
                     function onError(error) {
                     alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
                     }
                     
-              //google.maps.event.addDomListener(window, 'load', initMap);
 });
 
 

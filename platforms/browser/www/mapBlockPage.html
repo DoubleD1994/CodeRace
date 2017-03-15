@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+    
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="css/ionic.css">
+            <title>CodeRace</title>
+            <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function()
+                                  {
+                                  var countdown = new Date();
+                                  countdown.setSeconds(countdown.getSeconds()+60);
+                                  
+                                  // Update the count down every one second
+                                  var x = setInterval(function()
+                                                      {
+                                                      // Get todays date and time
+                                                      var now = new Date().getTime();
+                                                      
+                                                      //Find the distance between now and the count down date
+                                                      var distance = countdown - now;
+                                                      
+                                                      //time calculations for days, hours, minutes and seconds
+
+                                                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                                      
+                                                      //output the result in an element with id="theTime"
+                                                      document.getElementById("title").innerHTML = "You can resume in " + seconds + "s ";
+                                                      
+                                                      // If the count down is over, write some text
+                                                      if (distance < 0)
+                                                      {
+                                                        clearInterval(x);
+                                                        document.getElementById("title").innerHTML = "Game On!";
+                                                        window.location.href = "mapInterface.html";
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      }, 1000);
+                                  });
+                </script>
+            </head>
+    
+    <body>
+        <div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+            <h1 id="title" class="title"></h1>
+        </div>
+        <h3 style="margin-top:100px;">Someone from another team has blocked you're map by claiming the block map marker</h3>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    </body>
+    
+</html>
