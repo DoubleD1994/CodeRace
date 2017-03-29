@@ -86,7 +86,7 @@ $( document ).ready(function(){
                            success: function(data){},
                            error: function(xhr, status, err)
                            {
-                           alert(err);
+                           //alert(err);
                            }
                            
                         });
@@ -269,7 +269,7 @@ $( document ).ready(function(){
                                                                                                 success: function(data){},
                                                                                                 error: function(xhr, status, err)
                                                                                                 {
-                                                                                                alert(err);
+                                                                                                //alert(err);
                                                                                                 }
                                                                                                 });
                                                                                          }
@@ -306,7 +306,7 @@ $( document ).ready(function(){
                                                                                                 success: function(data){},
                                                                                                 error: function(xhr, status, err)
                                                                                                 {
-                                                                                                alert(err);
+                                                                                                //alert(err);
                                                                                                 }
                                                                                             });
                                                                                          }
@@ -372,7 +372,7 @@ $( document ).ready(function(){
                                                                                                                        success: function(data){},
                                                                                                                        error: function(xhr, status, err)
                                                                                                                        {
-                                                                                                                        alert(err);
+                                                                                                                        //alert(err);
                                                                                                                        }
                                                                                                            
                                                                                                                 });
@@ -380,7 +380,7 @@ $( document ).ready(function(){
                                                                                                             },
                                                                                                             error: function(xhr, status, err)
                                                                                                             {
-                                                                                                                alert(err);
+                                                                                                                //alert(err);
                                                                                                             }
                                                                                                             });
                                                                                                 }
@@ -421,7 +421,7 @@ $( document ).ready(function(){
                                                                                              success: function(data){},
                                                                                              error: function(xhr, status, err)
                                                                                              {
-                                                                                             alert(err);
+                                                                                             //alert(err);
                                                                                              }
                                                                                              
                                                                                              });
