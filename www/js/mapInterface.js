@@ -60,7 +60,7 @@ $( document ).ready(function(){
                     //display player location on map and send locaiton to db
                     function displayMarker(lat, lang){
                     
-                        var myLatlng = new google.maps.LatLng(55.932989, -3.214514);
+                        var myLatlng = new google.maps.LatLng(lat, lang);
                     
                         var iconBase = "img/";
                         marker = new google.maps.Marker({position: myLatlng,map: map, icon: iconBase + 'playerLocation.PNG'});
