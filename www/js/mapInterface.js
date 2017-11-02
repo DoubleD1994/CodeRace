@@ -20,7 +20,7 @@ $( document ).ready(function(){
                     //initialise the map
                    function initMap(latitude, longitude){
                     
-                    //Little pop up message to alert player if correct answer
+                    //Toast to display time remaining.
                     var x = document.getElementById("theTime")
                     x.className = "show";
                     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4000000);
@@ -187,7 +187,7 @@ $( document ).ready(function(){
                                      //add new marker for unclaimed location
                                      var locationMarker
                                      
-                                     //check is location is already claimed
+                                     //check is location is already claimed and if is visible
                                      if(isClaimed=="false" && isVisible=="true")
                                      {
                                         //check difficulty ratings so that appropriate marker displayed
@@ -446,11 +446,9 @@ $( document ).ready(function(){
                                      }
                                      else if(isClaimed=="true" && isVisible=="true")
                                      {
-                                        //add new marker for unclaimed location
-                                        //newMarker.setVisible(false);
+
                                         //place marker to say location claimed
                                         locationMarker = new google.maps.Marker({position: location, map: map, icon: iconBase + 'claimed.PNG'});
-                                        //locationMarker.setIcon(iconBase + 'claimed.PNG');
                                      }
                                      });
                               });

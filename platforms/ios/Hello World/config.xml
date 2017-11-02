@@ -75,9 +75,9 @@
     <feature name="Vibration">
         <param name="ios-package" value="CDVVibration" />
     </feature>
-    <name>Hello World</name>
+    <name>CodeRace</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        CodeRace Location Based Game Mobile Application
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
         PhoneGap Team
